@@ -32,9 +32,8 @@ public class PedidoController {
 		}
 		
 		Pedido pedido = pedidoRequest.toPedido();
-		
 		pedidoRepository.save(pedido);
 		
-		return "home";
+		return "redirect:/home";
 	}
 }
