@@ -12,7 +12,7 @@
 			</div>
 	
 			<div class="card mt-3">
-				<form th:object="${pedidoDto}" class="card-body" action="/pedido/novo"
+				<form th:object="${pedidoDto}" class="card-body" th:action="@{/pedido/novo}"
 					method="POST">
 					<div class="form-group">
 						<label for="nomeProduto">Produto</label> 
