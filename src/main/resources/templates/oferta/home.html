@@ -53,27 +53,17 @@
 			var app = new Vue({
 				el: '#ofertas',
 				data: {
-					pedidos: [
-					    {
-					        "id": 2,
-					        "nomeProduto": "Redmi Note 11",
-					        "valorNegociado": 60.00,
-					        "dataEntrega": "2022-09-08",
-					        "urlProduto": "https://www.amazon.com.br/Redmi-Note-11-Star-Blue/dp/B09QS9Z6CR?ref_=Oct_d_obs_d_16243803011&pd_rd_w=8R9Pb&content-id=amzn1.sym.574d7dde-c8d1-436d-a7fc-f2654a8c3190&pf_rd_p=574d7dde-c8d1-436d-a7fc-f2654a8c3190&pf_rd_r=ZYBXQGZ85VXXDESF5KGJ&pd_rd_wg=PmRwc&pd_rd_r=5c7d5589-d0ac-4650-b834-a9ff1c838e1b&pd_rd_i=B09QS9Z6CR",
-					        "urlImagem": "https://m.media-amazon.com/images/I/61bF1Q4Z4gL._AC_SL1500_.jpg",
-					        "descricao": "Android 4G",
-					        "status": "AGUARDANDO",
-					        "user": {
-					            "username": "joao",
-					            "password": "$2a$10$4FQnpp9O1qRkIW1UxwNjzOKQyqZ7HVFWg0vWt9OpC5CjwqQ/Y0myS",
-					            "enabled": true
-					        }
-					    }
-					]
-				}
+					pedidos: []
+				},
+				mounted () {
+				    axios
+				      .get('http://localhost:8080/api/pedidos/aguardando')
+				      .then(response => (this.pedidos = response.data))
+				  }
 			})
 		}
 	</script>
 	<script src="https://cdn.jsdelivr.net/npm/vue/dist/vue.js"></script>
+	<script src="https://cdn.jsdelivr.net/npm/axios/dist/axios.min.js"></script>
 </body>
 </html>
