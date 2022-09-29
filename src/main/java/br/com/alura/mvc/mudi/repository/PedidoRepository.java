@@ -23,5 +23,6 @@ public interface PedidoRepository extends JpaRepository<Pedido, Integer> {
 	public List<Pedido> findAllByUsuario(String username);
 
 	@Cacheable("pedidos")
-	public List<Pedido> findByStatus(StatusPedido entregue, Pageable paginacao);
+	@Query("SELECT p FROM Pedido p JOIN FETCH p.user u WHERE p.status = :status")
+	public List<Pedido> findByStatus(StatusPedido status, Pageable paginacao);
 }
