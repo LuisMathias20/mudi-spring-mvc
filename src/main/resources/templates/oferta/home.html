@@ -2,16 +2,16 @@
 <head th:replace="~{base :: head}">
 	<meta charset="UTF-8">
 </head>
-<body>
+<body onload="onLoad()">
 	<div th:replace="~{base :: logo}">
 	
 	</div>
 
-	<div class="container">
-		<div th:replace="~{base :: titulo('Últimos Pedidos')}">
+	<div class="container" id="ofertas">
+		<div th:replace="~{base :: titulo('Faça suas Oferta')}">
 		</div>
-		<div class="card mb-3" th:each="pedido : ${pedidos}">
-			<div class="card-header alert alert-dark" th:text="${pedido.nomeProduto}">Nome do produto</div>
+		<div class="card mb-3" v-for="pedido in pedidos">
+			<div class="card-header alert alert-dark">{{pedido.nomeProduto}}</div>
 		
 			<div class="card-body">
 				<div class="row">
@@ -19,27 +19,28 @@
 
 						<div class="row">
 							<div class="col-md-5">
-								Valor: <span th:if="${pedido.valorNegociado != null}" th:text="'R$ ' + ${#numbers.formatDecimal(pedido.valorNegociado, 3, 'POINT', 2, 'COMMA')}"></span>
+								Valor: <input />
 							</div>
 							<div class="col-md-7">
-								Data de entrega: <span th:text="${#temporals.format(pedido.dataEntrega,'dd/MM/yyyy')}"></span>
+								Data de entrega: <input /> </span>
 							</div>
 						</div>
 
 						<div>Produto:</div>
 						<div>
-							<input class="form-control" th:value="${pedido.urlProduto}"
-								value="url do produto">
+							<a v-bind:href="pedido.urlProduto" value="url do produto">
+								{{pedido.nomeProduto}}
+							</a>
 						</div>
 
 						<div>Descrição</div>
 						<div>
-							<textarea class="form-control" th:text="${pedido.descricao}">Descrição do pedido</textarea>
+							<textarea class="form-control">{{pedido.descricao}}</textarea>
 						</div>
 					</div>
 					<div class="col-12 col-sm-4">
 						<div>
-							<img class="img-thumbnail" th:src="${pedido.urlImagem}" src="" />
+							<img class="img-thumbnail" v-bind-src="pedido.urlImagem"/>
 						</div>
 					</div>
 				</div>
@@ -47,5 +48,32 @@
 		</div>
 		<div></div>
 	</div>
+	<script>
+		function onLoad() {
+			var app = new Vue({
+				el: '#ofertas',
+				data: {
+					pedidos: [
+					    {
+					        "id": 2,
+					        "nomeProduto": "Redmi Note 11",
+					        "valorNegociado": 60.00,
+					        "dataEntrega": "2022-09-08",
+					        "urlProduto": "https://www.amazon.com.br/Redmi-Note-11-Star-Blue/dp/B09QS9Z6CR?ref_=Oct_d_obs_d_16243803011&pd_rd_w=8R9Pb&content-id=amzn1.sym.574d7dde-c8d1-436d-a7fc-f2654a8c3190&pf_rd_p=574d7dde-c8d1-436d-a7fc-f2654a8c3190&pf_rd_r=ZYBXQGZ85VXXDESF5KGJ&pd_rd_wg=PmRwc&pd_rd_r=5c7d5589-d0ac-4650-b834-a9ff1c838e1b&pd_rd_i=B09QS9Z6CR",
+					        "urlImagem": "https://m.media-amazon.com/images/I/61bF1Q4Z4gL._AC_SL1500_.jpg",
+					        "descricao": "Android 4G",
+					        "status": "AGUARDANDO",
+					        "user": {
+					            "username": "joao",
+					            "password": "$2a$10$4FQnpp9O1qRkIW1UxwNjzOKQyqZ7HVFWg0vWt9OpC5CjwqQ/Y0myS",
+					            "enabled": true
+					        }
+					    }
+					]
+				}
+			})
+		}
+	</script>
+	<script src="https://cdn.jsdelivr.net/npm/vue/dist/vue.js"></script>
 </body>
 </html>
