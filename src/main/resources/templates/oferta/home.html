@@ -2,16 +2,16 @@
 <head th:replace="~{base :: head}">
 	<meta charset="UTF-8">
 </head>
-<body>
+<body onload="onLoad()">
 	<div th:replace="~{base :: logo}">
 	
 	</div>
 
-	<div class="container">
-		<div th:replace="~{base :: titulo('Últimos Pedidos')}">
+	<div class="container" id="ofertas">
+		<div th:replace="~{base :: titulo('Faça suas Oferta')}">
 		</div>
-		<div class="card mb-3" th:each="pedido : ${pedidos}">
-			<div class="card-header alert alert-dark" th:text="${pedido.nomeProduto}">Nome do produto</div>
+		<div class="card mb-3" v-for="pedido in pedidos">
+			<div class="card-header alert alert-dark">{{pedido.nomeProduto}}</div>
 		
 			<div class="card-body">
 				<div class="row">
@@ -19,27 +19,28 @@
 
 						<div class="row">
 							<div class="col-md-5">
-								Valor: <span th:if="${pedido.valorNegociado != null}" th:text="'R$ ' + ${#numbers.formatDecimal(pedido.valorNegociado, 3, 'POINT', 2, 'COMMA')}"></span>
+								Valor: <input />
 							</div>
 							<div class="col-md-7">
-								Data de entrega: <span th:text="${#temporals.format(pedido.dataEntrega,'dd/MM/yyyy')}"></span>
+								Data de entrega: <input /> </span>
 							</div>
 						</div>
 
 						<div>Produto:</div>
 						<div>
-							<input class="form-control" th:value="${pedido.urlProduto}"
-								value="url do produto">
+							<a v-bind:href="pedido.urlProduto" value="url do produto">
+								{{pedido.nomeProduto}}
+							</a>
 						</div>
 
 						<div>Descrição</div>
 						<div>
-							<textarea class="form-control" th:text="${pedido.descricao}">Descrição do pedido</textarea>
+							<textarea class="form-control">{{pedido.descricao}}</textarea>
 						</div>
 					</div>
 					<div class="col-12 col-sm-4">
 						<div>
-							<img class="img-thumbnail" th:src="${pedido.urlImagem}" src="" />
+							<img class="img-thumbnail" v-bind-src="pedido.urlImagem"/>
 						</div>
 					</div>
 				</div>
@@ -47,5 +48,22 @@
 		</div>
 		<div></div>
 	</div>
+	<script>
+		function onLoad() {
+			var app = new Vue({
+				el: '#ofertas',
+				data: {
+					pedidos: []
+				},
+				mounted () {
+				    axios
+				      .get('http://localhost:8080/api/pedidos/aguardando')
+				      .then(response => (this.pedidos = response.data))
+				  }
+			})
+		}
+	</script>
+	<script src="https://cdn.jsdelivr.net/npm/vue/dist/vue.js"></script>
+	<script src="https://cdn.jsdelivr.net/npm/axios/dist/axios.min.js"></script>
 </body>
 </html>
